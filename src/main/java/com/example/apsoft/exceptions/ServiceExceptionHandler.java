@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
 
 import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
@@ -24,6 +25,11 @@ public class ServiceExceptionHandler {
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<ErrorResponse> fileNotFoundException(FileNotFoundException ex){
         return exceptionHandlerPattern(ex, Code.FILE_NOT_FOUND, "Вы не загрузили файл");
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<ErrorResponse> multipartException(MultipartException ex){
+        return exceptionHandlerPattern(ex, Code.FILE_ERROR, "Ошибка файловой системы, вставьте файл заново");
     }
 
     private ResponseEntity<ErrorResponse> exceptionHandlerPattern(Exception ex, Code code, String message){
